@@ -15,8 +15,8 @@ module load nextflow/20.10.0
 echo "Starting: `date`"
 nextflow run Structural_Vars.nf -c Structural_Vars.config \
 	--profile imperial \
-	--RefGen "/rds/general/user/dthorbur/projects/tmstorage/live/acolmop1_ref_genome/GCA_016920705.1_AcolMOP1_genomic.fna" \
-	--InDir  "/rds/general/user/dthorbur/home/tmstorage/live/Collarless/01_Reads/02_AcolMOP1" \
+	--RefGen "/rds/general/user/dthorbur/projects/tmstorage/live/agamp4_ref_genome/VectorBase-54_AgambiaePEST_Genome.fasta" \
+	--InDir  "/rds/general/user/dthorbur/home/ephemeral/00_Work/04_Collarless_Raw/05_SVs/01_AgamP4/02_Mapped" \
 	--Chroms "AgamP4_2L,AgamP4_2R,AgamP4_3L,AgamP4_3R,AgamP4_X"
 	
 echo "Finished: `date`"

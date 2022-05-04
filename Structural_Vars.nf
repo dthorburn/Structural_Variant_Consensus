@@ -79,7 +79,7 @@ bcftools                  1.9                  h68d8f2e_9    bioconda
 blas                      1.0                         mkl
 boost-cpp                 1.70.0               ha2d47e9_1    conda-forge
 bzip2                     1.0.8                h7b6447c_0
-ca-certificates           2022.3.18            h06a4308_0
+ca-certificates           2022.3.29            h06a4308_1
 certifi                   2020.6.20          pyhd3eb1b0_3
 curl                      7.71.1               h8f29fe8_2
 cytoolz                   0.10.1           py27h7b6447c_0
@@ -120,6 +120,7 @@ pysam                     0.16.0.1         py27ha863e18_1    bioconda
 python                    2.7.15          h5a48372_1011_cpython    conda-forge
 python_abi                2.7                    1_cp27mu    conda-forge
 readline                  8.0                  h7b6447c_0
+sambamba                  0.7.1                h148d290_2    bioconda
 samblaster                0.1.26               h7d875b9_1    bioconda
 samtools                  1.9                 h10a08f8_12    bioconda
 scipy                     1.2.1            py27h7c811a0_0
@@ -189,6 +190,7 @@ ref_genome = file( params.RefGen, checkIfExists: true )
 ref_dir    = ref_genome.getParent()
 ref_name   = ref_genome.getBaseName()
 ref_index  = file( "${ref_dir}/${ref_name}*.fai", checkIfExists: true ).first()
+ref_dict   = file( "${ref_dir}/${ref_name}.dict", checkIfExists: true )
 split_sct  = file( params.BWA_split_script, checkIfExists: true )
                                                             // =========================================================
                                                             // Step 1: Processing BAM files
@@ -240,7 +242,7 @@ if( params.Skip_BP == false ) {
     output:
     tuple val(SampleID), val(chrom), path("${SampleID}.all.${chrom}.bam"), path("${SampleID}.discordant.${chrom}.bam"), path("${SampleID}.splitters.${chrom}.bam") into processed_bams_lumpy, processed_bams_delly
 
-    beforeScript 'module load python/3.5.4; module load samtools/1.2'
+    beforeScript 'module load python/3.5.4; module load samtools/1.3.1'
 
     script:
     """
@@ -323,9 +325,13 @@ if( params.Skip_LC == false ){
 
     script:
     """
+    samtools index ${all_bam}
+    samtools index ${spl_bam}
+    samtools index ${dis_bam}
+
     lumpyexpress -k -P ${params.LC_args} \\
       -R ${ref_genome} \\
-      -B ${all_bam} \
+      -B ${all_bam} \\
       -S ${spl_bam} \\
       -D ${dis_bam} \\
       -o ${SampleID}_${chrom}_lumpy.bam.vcf
@@ -372,6 +378,8 @@ if( params.Skip_DC == false ) {
 
     script:
     """
+    samtools index ${all_bam}
+
     delly call ${params.DC_args} \\
       -g ${ref_genome} \\
       -o ${SampleID}_${chrom}_delly.bam.bcf \\
@@ -418,7 +426,7 @@ if( params.Skip_LT == false ) {
     )
 
     input:
-    set SampleID, chrom, vcf, bam from raw_lumpy_vcfs_bams
+    set SampleID, chrom, vcf, bam, bai from raw_lumpy_vcfs_bams
 
     output:
     tuple SampleID, chrom, path("${SampleID}_${chrom}_lumpy.typed.NoMissing.vcf") into lumpy_out
@@ -468,6 +476,7 @@ if( params.Skip_DF == false ) {
     set SampleID, chrom, vcf from raw_delly_vcfs
     path ref_genome
     path ref_index
+    path ref_dict
 
     output:
     tuple SampleID, chrom, path("${SampleID}_${chrom}_delly.filtered.NoMissing.vcf") into delly_out

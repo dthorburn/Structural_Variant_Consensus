@@ -13,7 +13,7 @@ dependencies:
   - blas=1.0=mkl
   - boost-cpp=1.70.0=ha2d47e9_1
   - bzip2=1.0.8=h7b6447c_0
-  - ca-certificates=2022.3.18=h06a4308_0
+  - ca-certificates=2022.3.29=h06a4308_1
   - certifi=2020.6.20=pyhd3eb1b0_3
   - curl=7.71.1=h8f29fe8_2
   - cytoolz=0.10.1=py27h7b6447c_0
@@ -54,6 +54,7 @@ dependencies:
   - python=2.7.15=h5a48372_1011_cpython
   - python_abi=2.7=1_cp27mu
   - readline=8.0=h7b6447c_0
+  - sambamba=0.7.1=h148d290_2
   - samblaster=0.1.26=h7d875b9_1
   - samtools=1.9=h10a08f8_12
   - scipy=1.2.1=py27h7c811a0_0
