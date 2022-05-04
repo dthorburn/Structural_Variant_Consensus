@@ -4,6 +4,8 @@ These pipelines were developed to call large structural variants (SVs) from read
 
 I've developed the pipeline using [Nextflow](https://www.nextflow.io/) version 20.10.0 (the most recent version on Imperial College London's HPC; date: 26/04/22). To map reads to the repeat-masked reference genome, please see a [previous nextflow workflow](https://github.com/dthorburn/Genomic_Read_Processing). 
 
+Please note, the extractSplitReads_BwaMem script from the [arq5x/lumpy-sv](https://github.com/arq5x/lumpy-sv) repository. I've only changed the name for consistency with my pipeline.
+
 ## Pipeline framework
 **BP**: Split and discordant reads are extracted from indexed bam files.
 
