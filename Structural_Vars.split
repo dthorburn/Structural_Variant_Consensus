@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# This code is the extractSplitReads_BwaMem script from the arq5x/lumpy-sv repository. I've only changed the name for consistency with my pipeline. 
 
 import sys
 import getopt
