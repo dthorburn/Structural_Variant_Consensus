@@ -24,7 +24,8 @@ Please note, the Structural_Vars.split script is a copy of the extractSplitReads
   2. Clone this repository. 
   3. Update the project directory path and add required (and optional) arguments to the `Structural_Variants.sh` PBS job submission script. 
   4. Initialise the conda environment using the command ```conda env create --file Structural_Variants.yaml```. You can check the installation by comparing the versions using ```nextflow run Structural_Variants.nf -c Structural_Variants.config --profile imperial --help``` with those installed using ```module load anaconda3/personal; source activate SVs; conda list```. 
-  5. Run the pipeline using `qsub Structural_Variants.sh`. 
+  5. Index the reference genome using: ```source activate SVs; samtools faidx reference_genome.fasta; gatk CreateSequenceDictionary -R reference_genome.fasta```
+  6. Run the pipeline using `qsub Structural_Variants.sh`. 
   
 ***NB*** The pipeline and example code will only work on Imperial's HPC. If you are not using a PBS job submission system, you'll need to update all the scripts to reflect the job submission system. See [Nextflow doucmentation](https://www.nextflow.io/docs/latest/executor.html) for help. 
 
